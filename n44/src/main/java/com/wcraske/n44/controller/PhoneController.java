@@ -30,8 +30,15 @@ public class PhoneController {
     }
     //pagination
     @GetMapping("/pagination")
-    public List<Phone> getPagedPhones(@RequestParam(required = false, defaultValue = "1") int pageNo, @RequestParam(required = false, defaultValue = "5") int pageSize) {
-        return phoneService.getPagedPhones(PageRequest.of(pageNo, pageSize));
+    public String getPagedPhones(
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "5") int pageSize) {
+
+        long start = System.currentTimeMillis();
+        List<Phone> result = phoneService.getPagedPhones(PageRequest.of(pageNo, pageSize));
+        long end = System.currentTimeMillis();
+
+        return "Fetched " + result.size() + " records in " + (end - start) + "ms";
     }
     //projection
     @GetMapping("/projection")
