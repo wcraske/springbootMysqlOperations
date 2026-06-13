@@ -1,5 +1,7 @@
 package com.wcraske.n44.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +12,7 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "phones")
-public class Phone {
+public class Phone implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

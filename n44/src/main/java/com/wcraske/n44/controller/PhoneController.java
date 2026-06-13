@@ -21,19 +21,26 @@ public class PhoneController {
         this.phoneService = phoneService;
     }
 
+    //all phones list
     @GetMapping("/full-list")
     public List<Phone> getAllPhones() {
         return phoneService.getAllPhones();
     }
-
+    //pagination
     @GetMapping("/pagination")
     public List<Phone> getPagedPhones(@RequestParam(required = false, defaultValue = "1") int pageNo, @RequestParam(required = false, defaultValue = "5") int pageSize) {
         return phoneService.getPagedPhones(PageRequest.of(pageNo, pageSize));
     }
-
+    //projection
     @GetMapping("/projection")
     public List<PhoneProjection> getProjection() {
         return phoneService.getNecessaryDetails();
+    }
+
+    @GetMapping("/clear-cache")
+        public String clearCache() {
+        phoneService.clearCache();
+        return "Cache cleared!";
     }
 
     
