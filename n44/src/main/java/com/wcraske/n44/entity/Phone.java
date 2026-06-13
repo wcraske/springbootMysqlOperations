@@ -6,12 +6,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "phones")
+@Table(name = "phones", indexes = {
+    @Index(name = "idx_brand", columnList = "brand"),
+    @Index(name = "idx_os", columnList = "os"),
+    @Index(name = "idx_price", columnList = "price_inr"),
+    @Index(name = "idx_launch_year", columnList = "launch_year"),
+    @Index(name = "idx_brand_os", columnList = "brand, os")
+})
 public class Phone implements Serializable {
 
     @Id

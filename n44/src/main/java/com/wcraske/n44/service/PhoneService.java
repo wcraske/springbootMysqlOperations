@@ -63,4 +63,8 @@ public class PhoneService {
             redisTemplate.delete(keys);
         }
     }
+
+    public List<Phone> searchPhones(String brand, String os, Double maxPrice, Pageable pageable) {
+        return phoneRepository.searchPhones(brand, os, maxPrice, pageable);
+}
 }

@@ -43,5 +43,16 @@ public class PhoneController {
         return "Cache cleared!";
     }
 
+    @GetMapping("/search")
+    public List<Phone> search(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String os,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "20") int pageSize) {
+
+        return phoneService.searchPhones(brand, os, maxPrice, PageRequest.of(pageNo, pageSize));
+    }
+
     
 }
