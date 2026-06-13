@@ -1,6 +1,7 @@
 package com.wcraske.n44.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +18,8 @@ import lombok.Data;
     @Index(name = "idx_os", columnList = "os"),
     @Index(name = "idx_price", columnList = "price_inr"),
     @Index(name = "idx_launch_year", columnList = "launch_year"),
-    @Index(name = "idx_brand_os", columnList = "brand, os")
+    @Index(name = "idx_brand_os", columnList = "brand, os"),
+    @Index(name = "idx_updated_at", columnList = "updated_at")
 })
 public class Phone implements Serializable {
 
@@ -58,4 +60,5 @@ public class Phone implements Serializable {
     private String cameraSetup;
     private Double weightG;
     private Double thicknessMm;
+    private LocalDateTime updatedAt;
 }

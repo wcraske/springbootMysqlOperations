@@ -1,5 +1,6 @@
 package com.wcraske.n44.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,10 +24,12 @@ public class PhoneService {
         this.redisTemplate = redisTemplate;
     }
 
+    // all phones no cache, too large
     public List<Phone> getAllPhones() {
         return phoneRepository.findAll();
     }
 
+    // pagination with Redis cache
     @SuppressWarnings("unchecked")
     public List<Phone> getPagedPhones(Pageable pageable) {
         String key = "pagedPhones:" + pageable.getPageNumber() + ":" + pageable.getPageSize();
@@ -41,6 +44,7 @@ public class PhoneService {
         return result;
     }
 
+    // projection with Redis cache
     @SuppressWarnings("unchecked")
     public List<PhoneProjection> getNecessaryDetails() {
         String key = "phoneProjections:page0";
@@ -55,16 +59,22 @@ public class PhoneService {
         return result;
     }
 
+    // search with timing tracking
+    public List<Phone> searchPhones(String brand, String os, Double maxPrice, Pageable pageable) {
+        return phoneRepository.searchPhones(brand, os, maxPrice, pageable);
+    }
+
+    // sync returns only records updated since last sync
+    public List<Phone> getSyncedPhones(LocalDateTime lastSyncedAt, Pageable pageable) {
+        return phoneRepository.findUpdatedSince(lastSyncedAt, pageable);
+    }
+
+    // clear all Redis cache
     public void clearCache() {
         redisTemplate.delete("phoneProjections:page0");
-
         var keys = redisTemplate.keys("pagedPhones:*");
         if (keys != null && !keys.isEmpty()) {
             redisTemplate.delete(keys);
         }
     }
-
-    public List<Phone> searchPhones(String brand, String os, Double maxPrice, Pageable pageable) {
-        return phoneRepository.searchPhones(brand, os, maxPrice, pageable);
-}
 }
